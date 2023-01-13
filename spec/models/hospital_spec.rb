@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Hospital do
   before(:each) do
     @grey = Hospital.create(name: 'Grey Sloan Memorial Hospital')
+    @seaside = Hospital.create(name: 'Seaside Health & Wellness Center')
     @meredith = @grey.doctors.create!(name: 'Meredith Gray', specialty: 'General Surgery', university: 'Harvard')
     @alex = @grey.doctors.create!(name: 'Alex Karev', specialty: 'Pediatric Surgery', university: 'Johns Hopkins')
     @miranda = @grey.doctors.create!(name: 'Miranda Bailey', specialty: 'General Surgery', university: 'Stanford')
@@ -28,6 +29,8 @@ RSpec.describe Hospital do
       doogie = @grey.doctors.create!(name: 'Doogie Howser', specialty: 'Resident in Surgery', university: 'Princeton')
       
       expect(@grey.doctors_with_patient_count).to eq([@meredith, @derek, @miranda, @alex, doogie])
+
+      expect(@seaside.doctors_with_patient_count).to eq([])
     end
   end
 end
