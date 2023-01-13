@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Hospital do
+RSpec.describe 'hospital show page' do
   before(:each) do
     @grey = Hospital.create(name: 'Grey Sloan Memorial Hospital')
     @meredith = @grey.doctors.create!(name: 'Meredith Gray', specialty: 'General Surgery', university: 'Harvard')
@@ -19,15 +19,27 @@ RSpec.describe Hospital do
     PatientDoctor.create!(doctor: @derek, patient: @patient2)
   end
 
-  it {should have_many :doctors}
+  it 'lists all docs and their patient count ordered by patient count' do
+    visit hospital_path(@grey)
 
-  describe '#doctors_with_patient_count' do
-    it 'returns doctors ordered by patient count along with patient count' do
-      expect(@grey.doctors_with_patient_count).to eq([@meredith, @derek, @miranda, @alex])
-      
-      doogie = @grey.doctors.create!(name: 'Doogie Howser', specialty: 'Resident in Surgery', university: 'Princeton')
-      
-      expect(@grey.doctors_with_patient_count).to eq([@meredith, @derek, @miranda, @alex, doogie])
-    end
+    expect(page).to have_content('Dr. Meredith Gray (4 patients)')
+    expect(page).to have_content('Dr. Alex Karev (1 patients)')
+    expect(page).to have_content('Dr. Miranda Bailey (2 patients)')
+    expect(page).to have_content('Dr. Derek McDreamy (3 patients)')
+
+    expect(@meredith.name).to appear_before(@derek.name)
+    expect(@derek.name).to appear_before(@miranda.name)
+    expect(@miranda.name).to appear_before(@alex.name)
   end
+
+  
 end
+
+# As a visitor
+# When I visit a hospital's show page
+# I see the hospital's name
+# And I see the names of all doctors that work at this hospital,
+# And next to each doctor I see the number of patients associated with the doctor,
+# And I see the list of doctors is ordered from most number of patients to least 
+# number of patients
+# (Doctor patient counts should be a single query)

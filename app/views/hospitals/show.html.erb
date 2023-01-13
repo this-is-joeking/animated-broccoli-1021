@@ -1,0 +1,7 @@
+<h1><%= @hospital.name %></h1>
+<h3>Provider's caseloads:</h3>
+<ul>
+  <% @hospital.doctors_with_patient_count.each do |doctor| %>
+    <li><%= "Dr. #{doctor.name} (#{doctor.patient_count} patients)" %>
+  <% end %>
+</ul>
