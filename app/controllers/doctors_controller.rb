@@ -17,6 +17,10 @@ class DoctorsController < ApplicationController
   end
 
   def update
+    doctor = Doctor.find(params[:id])
+    dp = doctor.patient_doctors.find_by(patient_id: params[:patient_id])
+    dp.delete
+    redirect_to doctor_path(doctor)
   end
 
   def destroy

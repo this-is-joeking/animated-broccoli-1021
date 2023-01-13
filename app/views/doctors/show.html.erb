@@ -2,11 +2,12 @@
 <h3>Specialty: <%= @doctor.specialty %></h3>
 <h3>University: <%= @doctor.university %></h3>
 <h3>Practicing at: <%= @doctor.hospital.name %></h3>
-<h5>Current Patients:</h5>
+<h5>Current Caseload:</h5>
 <ul>
   <% @doctor.patients.each do |patient| %>
-    <li>
+    <li id="patient-<%=patient.id%>">
       <%= patient.name %>
+      <%= button_to "Remove Patient", "/doctors/#{@doctor.id}?patient_id=#{patient.id}", method: :patch %>
     </li>
   <% end %>
 </ul>
